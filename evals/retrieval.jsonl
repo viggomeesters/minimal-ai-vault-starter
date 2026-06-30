@@ -1,0 +1,1 @@
+{"id":"eval.weekly-planning","type":"retrieval_eval","query":"plan the week","must_return":["task.make-starter-cloneable","decision.keep-source-notes-simple"]}

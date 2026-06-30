@@ -1,0 +1,3 @@
+{"id":"claim.daily-read-only","type":"claim","text":"Human daily notes should remain read-only for automation.","source_id":"source.daily.2026-01-01","confidence":0.98}
+{"id":"claim.jsonl-structured-records","type":"claim","text":"Structured records should live in JSONL instead of being written back into source notes.","source_id":"source.daily.2026-01-01","confidence":0.95}
+{"id":"claim.ai-daily-cited","type":"claim","text":"AI daily notes should list open loops, decisions, and cited sources.","source_id":"source.inbox.example-capture","confidence":0.9}

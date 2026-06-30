@@ -1,0 +1,10 @@
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+dist/*.sqlite
+dist/bundles/*.json
+dist/human_owned_hashes.json
+vault/attachments/private/
+.DS_Store

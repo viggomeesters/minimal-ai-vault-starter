@@ -1,0 +1,12 @@
+[project]
+name = "minimal-ai-vault-starter"
+version = "0.1.0"
+description = "Public-safe starter for a minimal AI-enabled Obsidian/JSONL vault"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

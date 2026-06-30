@@ -1,0 +1,28 @@
+{
+  "name": "Minimal AI Vault Starter",
+  "promise": "Write daily/inbox notes; automation derives JSONL records and generated views without mutating human-owned notes.",
+  "human_owned": ["vault/daily/**", "vault/inbox/**"],
+  "agent_owned": ["raw/**", "records/**", "views/**", "vault/ai-daily/**", "vault/generated/**", "dist/**"],
+  "canonical": ["records/*.jsonl", "schema/*.schema.json"],
+  "generated": ["dist/**", "views/**", "vault/ai-daily/**", "vault/generated/**"],
+  "daily_note_permissions": {
+    "read": true,
+    "quote_with_source": true,
+    "derive_records": true,
+    "create_generated_views": true,
+    "edit_original": false,
+    "add_links_to_original": false,
+    "reformat_original": false,
+    "append_to_original": false
+  },
+  "attachment_storage": "vault/attachments/objects/sha256/<first-two-sha-chars>/<sha256>/<filename>",
+  "validation_gates": [
+    "JSONL syntax",
+    "JSON Schema per record file",
+    "unique ids",
+    "cross-reference integrity",
+    "attachment SHA256 and size",
+    "human-owned notes unchanged",
+    "privacy/public-safety guard"
+  ]
+}
