@@ -1,0 +1,33 @@
+{
+  "id": "automation-model",
+  "kind": "doc",
+  "title": "Automation model",
+  "jobs": [
+    {
+      "command": "scan-daily",
+      "purpose": "Read human notes and produce raw events.",
+      "may_mutate_human_owned": false
+    },
+    {
+      "command": "extract",
+      "purpose": "Convert raw events to typed records.",
+      "may_mutate_human_owned": false
+    },
+    {
+      "command": "render-views",
+      "purpose": "Publish human-readable generated views.",
+      "may_mutate_human_owned": false
+    },
+    {
+      "command": "build-sqlite",
+      "purpose": "Build a local runtime query cache.",
+      "may_mutate_human_owned": false
+    },
+    {
+      "command": "bundle",
+      "purpose": "Produce bounded cited context for an AI assistant.",
+      "may_mutate_human_owned": false
+    }
+  ],
+  "invariant": "Each job must leave vault/daily/** and vault/inbox/** untouched."
+}

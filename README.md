@@ -23,7 +23,7 @@ make check
 - `records/*.jsonl` plus `schema/*.schema.json` are the canonical structured data layer.
 - `views/`, `vault/ai-daily/`, `vault/generated/`, and `dist/` are generated/rebuildable.
 - `dist/vaultctx.sqlite` is a runtime projection, not source of truth.
-- `docs/starter-contract.json` is the machine-readable starter contract.
+- `docs/*.json` are machine-readable contracts/docs; there are no prose docs you need to read.
 - Attachments are referenced by SHA256 metadata and deterministic storage paths.
 
 ## Useful commands

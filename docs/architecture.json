@@ -1,0 +1,32 @@
+{
+  "id": "architecture",
+  "kind": "doc",
+  "title": "Architecture",
+  "pipeline": [
+    "human daily/inbox notes",
+    "raw events",
+    "typed JSONL records",
+    "bundles/views/indexes"
+  ],
+  "source_of_truth": {
+    "human_input": [
+      "vault/daily/**",
+      "vault/inbox/**"
+    ],
+    "canonical_structured_data": [
+      "records/*.jsonl",
+      "schema/*.schema.json"
+    ],
+    "generated_projections": [
+      "views/**",
+      "vault/ai-daily/**",
+      "vault/generated/**",
+      "dist/**"
+    ]
+  },
+  "rules": [
+    "Markdown input is evidence.",
+    "JSONL records are canonical.",
+    "SQLite and Markdown views are generated projections."
+  ]
+}

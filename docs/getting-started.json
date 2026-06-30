@@ -1,0 +1,12 @@
+{
+  "id": "getting-started",
+  "kind": "doc",
+  "title": "Getting started",
+  "steps": [
+    "Clone the repo.",
+    "Run make check.",
+    "Replace the demo daily note with your own local note.",
+    "Keep private notes and attachments out of public Git remotes.",
+    "Use generated views as dashboards, not as source of truth."
+  ]
+}

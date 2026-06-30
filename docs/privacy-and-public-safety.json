@@ -1,0 +1,19 @@
+{
+  "id": "privacy-and-public-safety",
+  "kind": "doc",
+  "title": "Privacy and public safety",
+  "guard": {
+    "checks": [
+      "non-example email addresses",
+      "user paths",
+      "Telegram-like ids",
+      "common secret tokens"
+    ],
+    "allowed_pattern_definition_locations": [
+      "scripts/vaultctx.py",
+      "tests/test_cli.py",
+      "docs/privacy-and-public-safety.json"
+    ]
+  },
+  "policy": "Generated or committed content should stay synthetic."
+}

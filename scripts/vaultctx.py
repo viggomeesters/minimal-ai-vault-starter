@@ -13,7 +13,7 @@ PRIVACY_PATTERNS = [
     ('telegram_id', re.compile(r'\btelegram[:_ -]*(chat|user)?[:_ -]*-?\d{7,}\b', re.I)),
     ('secret', re.compile(r'\b(?:sk-[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b')),
 ]
-ALLOW_PRIVACY_PATTERN_FILES = {'scripts/vaultctx.py','tests/test_cli.py','docs/privacy-and-public-safety.md'}
+ALLOW_PRIVACY_PATTERN_FILES = {'scripts/vaultctx.py','tests/test_cli.py','docs/privacy-and-public-safety.json'}
 
 def root_path(rel): return ROOT / rel
 
