@@ -1,31 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">Minimal AI Vault Starter</title>
-  <desc id="desc">A read-only daily note flow into deterministic JSONL records, generated views, and AI-ready context.</desc>
+  <desc id="desc">Daily and inbox notes remain human-owned while deterministic automation generates JSONL context.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#08111f"/>
-      <stop offset="1" stop-color="#16213d"/>
+      <stop offset="0.58" stop-color="#0d1b2f"/>
+      <stop offset="1" stop-color="#11243c"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#38bdf8"/>
-      <stop offset="1" stop-color="#a78bfa"/>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5eead4"/>
+      <stop offset="1" stop-color="#60a5fa"/>
     </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity="0.32"/>
+    </filter>
   </defs>
+
   <rect width="1280" height="640" fill="url(#bg)"/>
-  <rect x="72" y="76" width="1136" height="488" rx="36" fill="#0f172a" stroke="#334155" stroke-width="2"/>
-  <text x="110" y="172" fill="#e2e8f0" font-family="Inter, Arial, sans-serif" font-size="30" letter-spacing="3">MINIMAL AI VAULT STARTER</text>
-  <text x="110" y="260" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="800">Daily notes stay human.</text>
-  <text x="110" y="334" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="800">JSONL becomes context.</text>
-  <text x="112" y="410" fill="#bae6fd" font-family="Inter, Arial, sans-serif" font-size="30">No LLM required • deterministic extract • cited generated views</text>
-  <g transform="translate(875 165)">
-    <rect x="0" y="0" width="250" height="310" rx="22" fill="#111827" stroke="#38bdf8" stroke-width="3"/>
-    <text x="28" y="58" fill="#f8fafc" font-family="monospace" font-size="26">daily.md</text>
-    <line x1="28" y1="86" x2="218" y2="86" stroke="#475569" stroke-width="3"/>
-    <text x="28" y="132" fill="#cbd5e1" font-family="monospace" font-size="20">- claim</text>
-    <text x="28" y="174" fill="#cbd5e1" font-family="monospace" font-size="20">- task</text>
-    <text x="28" y="216" fill="#cbd5e1" font-family="monospace" font-size="20">- decision</text>
-    <path d="M-105 155 H-20" stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
-    <path d="M-40 132 L-15 155 L-40 178" fill="none" stroke="url(#accent)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-    <text x="-260" y="165" fill="#93c5fd" font-family="monospace" font-size="24">records/*.jsonl</text>
+  <circle cx="1090" cy="110" r="210" fill="#1e40af" opacity="0.16"/>
+  <circle cx="1010" cy="520" r="260" fill="#14b8a6" opacity="0.10"/>
+  <path d="M80 520 C260 420 370 600 540 500 S850 420 1180 520" fill="none" stroke="#38bdf8" stroke-opacity="0.10" stroke-width="2"/>
+
+  <rect x="96" y="86" width="1088" height="468" rx="34" fill="#0b1628" opacity="0.84" stroke="#27415f" stroke-width="2" filter="url(#softShadow)"/>
+
+  <g transform="translate(148 148)">
+    <text x="0" y="0" fill="#9fb3c8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="23" font-weight="700" letter-spacing="6">MINIMAL AI VAULT STARTER</text>
+    <text x="0" y="78" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.6">Notes stay human.</text>
+    <text x="0" y="144" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.6">JSONL builds context.</text>
+    <text x="0" y="210" fill="#cbd5e1" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="500">No LLM · deterministic extract · cited views</text>
+
+    <g transform="translate(0 272)">
+      <rect x="0" y="0" width="168" height="44" rx="22" fill="#0f766e" opacity="0.24" stroke="#2dd4bf" stroke-opacity="0.55"/>
+      <text x="22" y="29" fill="#a7f3d0" font-family="Inter, ui-sans-serif, system-ui" font-size="17" font-weight="700">read-only notes</text>
+      <rect x="188" y="0" width="118" height="44" rx="22" fill="#1d4ed8" opacity="0.22" stroke="#60a5fa" stroke-opacity="0.55"/>
+      <text x="210" y="29" fill="#bfdbfe" font-family="Inter, ui-sans-serif, system-ui" font-size="17" font-weight="700">JSONL</text>
+      <rect x="326" y="0" width="146" height="44" rx="22" fill="#7c3aed" opacity="0.20" stroke="#a78bfa" stroke-opacity="0.55"/>
+      <text x="348" y="29" fill="#ddd6fe" font-family="Inter, ui-sans-serif, system-ui" font-size="17" font-weight="700">AI context</text>
+    </g>
+  </g>
+
+  <g transform="translate(822 150)">
+    <rect x="0" y="0" width="278" height="326" rx="26" fill="#07111f" stroke="url(#accent)" stroke-width="3"/>
+    <rect x="26" y="26" width="226" height="52" rx="14" fill="#0f1f35"/>
+    <text x="44" y="59" fill="#e2e8f0" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="23" font-weight="700">daily.md</text>
+    <line x1="32" y1="102" x2="246" y2="102" stroke="#334155" stroke-width="2"/>
+    <text x="34" y="144" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- claim</text>
+    <text x="34" y="190" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- task</text>
+    <text x="34" y="236" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- decision</text>
+    <path d="M64 286 H214" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+    <path d="M184 266 L214 286 L184 306" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

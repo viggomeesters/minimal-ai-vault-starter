@@ -1,19 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Minimal AI Vault Starter social preview</title>
-  <desc id="desc">Daily notes are read-only evidence; deterministic extraction creates JSONL context.</desc>
+  <desc id="desc">A public-safe starter for read-only daily notes, deterministic JSONL extraction, and generated AI context.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#020617"/>
-      <stop offset="1" stop-color="#1e1b4b"/>
+      <stop offset="0" stop-color="#070f1d"/>
+      <stop offset="0.65" stop-color="#0e1d32"/>
+      <stop offset="1" stop-color="#10243d"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#60a5fa"/>
     </linearGradient>
   </defs>
+
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="1010" cy="110" r="170" fill="#38bdf8" opacity="0.18"/>
-  <circle cx="1060" cy="520" r="210" fill="#a78bfa" opacity="0.16"/>
-  <text x="72" y="150" fill="#93c5fd" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="4">MINIMAL AI VAULT STARTER</text>
-  <text x="72" y="260" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800">Write notes.</text>
-  <text x="72" y="345" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800">Generate JSONL.</text>
-  <text x="76" y="430" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="32">Read-only daily notes → deterministic records → AI-ready context</text>
-  <rect x="78" y="482" width="520" height="58" rx="29" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
-  <text x="112" y="520" fill="#e0f2fe" font-family="monospace" font-size="24">python scripts/vaultctx.py extract --dry-run</text>
+  <circle cx="1000" cy="105" r="220" fill="#2563eb" opacity="0.13"/>
+  <circle cx="950" cy="545" r="300" fill="#14b8a6" opacity="0.09"/>
+  <rect x="70" y="72" width="1060" height="486" rx="38" fill="#0a1627" opacity="0.88" stroke="#263b57" stroke-width="2"/>
+
+  <g transform="translate(128 136)">
+    <text x="0" y="0" fill="#9fb3c8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="700" letter-spacing="6">MINIMAL AI VAULT STARTER</text>
+    <text x="0" y="94" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="62" font-weight="850" letter-spacing="-1.6">Notes stay human.</text>
+    <text x="0" y="170" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="62" font-weight="850" letter-spacing="-1.6">JSONL context.</text>
+    <text x="0" y="246" fill="#cbd5e1" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="26" font-weight="500">Read-only notes · deterministic extraction</text>
+    <line x1="0" y1="318" x2="520" y2="318" stroke="url(#line)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(822 172)">
+    <rect x="0" y="0" width="244" height="286" rx="28" fill="#07111f" stroke="url(#line)" stroke-width="3"/>
+    <text x="32" y="62" fill="#e2e8f0" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="23" font-weight="700">daily.md</text>
+    <line x1="30" y1="92" x2="214" y2="92" stroke="#334155" stroke-width="2"/>
+    <text x="32" y="138" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- claim</text>
+    <text x="32" y="184" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- task</text>
+    <text x="32" y="230" fill="#cbd5e1" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">- decision</text>
+  </g>
 </svg>
