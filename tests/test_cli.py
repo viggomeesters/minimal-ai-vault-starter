@@ -30,6 +30,32 @@ def test_attachment_sha_mismatch_fails(tmp_path):
 def test_scan_and_render_do_not_mutate_daily(tmp_path):
     repo=copy_repo(tmp_path); daily=repo/'vault/daily/2026-01-01.md'; before=daily.read_bytes(); run([sys.executable,'scripts/vaultctx.py','scan-daily'], cwd=repo); run([sys.executable,'scripts/vaultctx.py','render-views'], cwd=repo); assert daily.read_bytes() == before
 
+def test_extract_generates_typed_records_from_raw_bullets(tmp_path):
+    repo=copy_repo(tmp_path)
+    run([sys.executable,'scripts/vaultctx.py','scan-daily'], cwd=repo)
+    res=run([sys.executable,'scripts/vaultctx.py','extract'], cwd=repo)
+    assert 'generated' in res.stdout
+    claims=[json.loads(line) for line in (repo/'records/claims.jsonl').read_text().splitlines()]
+    tasks=[json.loads(line) for line in (repo/'records/tasks.jsonl').read_text().splitlines()]
+    decisions=[json.loads(line) for line in (repo/'records/decisions.jsonl').read_text().splitlines()]
+    entities=[json.loads(line) for line in (repo/'records/entities.jsonl').read_text().splitlines()]
+    assert any('never edit this daily note' in c['text'] for c in claims)
+    assert any('clone in two minutes' in t['title'] for t in tasks)
+    assert any('structured records in JSONL' in d['title'] for d in decisions)
+    assert {'entity.alex-example','entity.sam-example'} <= {e['id'] for e in entities}
+    assert all(row['source_id'].startswith('source.') for row in claims + tasks + decisions + entities)
+
+def test_extract_is_idempotent_and_does_not_mutate_daily(tmp_path):
+    repo=copy_repo(tmp_path)
+    daily=repo/'vault/daily/2026-01-01.md'
+    before=daily.read_bytes()
+    run([sys.executable,'scripts/vaultctx.py','scan-daily'], cwd=repo)
+    run([sys.executable,'scripts/vaultctx.py','extract'], cwd=repo)
+    first=(repo/'records/tasks.jsonl').read_text()
+    run([sys.executable,'scripts/vaultctx.py','extract'], cwd=repo)
+    assert (repo/'records/tasks.jsonl').read_text() == first
+    assert daily.read_bytes() == before
+
 def test_bundle_contains_must_cite():
     data=json.loads(run([sys.executable,'scripts/vaultctx.py','bundle','--goal','plan the week']).stdout); assert data['must_cite']; assert all(x.startswith('source.') for x in data['must_cite'])
 

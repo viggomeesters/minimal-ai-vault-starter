@@ -28,5 +28,11 @@
     "Markdown input is evidence.",
     "JSONL records are canonical.",
     "SQLite and Markdown views are generated projections."
-  ]
+  ],
+  "extractor": {
+    "type": "deterministic_rules",
+    "writes_canonical_records": true,
+    "uses_llm": false,
+    "human_owned_mutation_allowed": false
+  }
 }

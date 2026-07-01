@@ -29,5 +29,37 @@
       "may_mutate_human_owned": false
     }
   ],
-  "invariant": "Each job must leave vault/daily/** and vault/inbox/** untouched."
+  "invariant": "Each job must leave vault/daily/** and vault/inbox/** untouched.",
+  "deterministic_extraction": {
+    "llm_required": false,
+    "input": [
+      "raw/daily_events.jsonl",
+      "raw/inbox_events.jsonl"
+    ],
+    "owned_outputs": [
+      "records/sources.jsonl",
+      "records/entities.jsonl",
+      "records/projects.jsonl",
+      "records/claims.jsonl",
+      "records/tasks.jsonl",
+      "records/decisions.jsonl",
+      "records/relations.jsonl"
+    ],
+    "preserved_outputs": [
+      "records/attachments.jsonl"
+    ],
+    "rules": {
+      "entities": "Extract title-cased synthetic names matching \"<Name> Example\".",
+      "tasks": "Lines starting with or containing open loop/task/todo, plus starter-kit action lines.",
+      "decisions": "Lines starting with decision/decision idea/besluit or containing decision.",
+      "claims": "Remaining evidence bullets become claims with source references.",
+      "projects": "Starter-kit or AI-vault language infers project.ai-vault-starter.",
+      "relations": "Mentioned synthetic people are linked to the inferred project."
+    },
+    "invariants": [
+      "idempotent stable ids",
+      "source_id on every generated typed record",
+      "human-owned notes unchanged"
+    ]
+  }
 }

@@ -77,6 +77,62 @@ def validate_schema(kind, row, schema):
 def all_records():
     return {stem: read_jsonl(root_path(f'records/{stem}.jsonl')) for stem in RECORD_FILES}
 
+
+def slugify(text):
+    slug = re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')
+    return slug or hashlib.sha1(text.encode()).hexdigest()[:8]
+
+def stable_id(prefix, *parts):
+    joined = ':'.join(str(p) for p in parts)
+    return f'{prefix}.{hashlib.sha1(joined.encode()).hexdigest()[:12]}'
+
+def unique_rows(rows):
+    by_id={}
+    for row in rows:
+        by_id[row['id']] = row
+    return [by_id[k] for k in sorted(by_id)]
+
+def raw_events():
+    rows=[]
+    for rel in ['raw/daily_events.jsonl','raw/inbox_events.jsonl']:
+        rows.extend(read_jsonl(root_path(rel)))
+    return rows
+
+def source_id_for_path(path):
+    stem = Path(path).stem
+    folder = Path(path).parent.name or 'source'
+    return f'source.{folder}.{slugify(stem)}'
+
+def title_for_path(path):
+    return Path(path).stem.replace('-', ' ').replace('_', ' ').title()
+
+def extract_person_names(text):
+    names=[]
+    for m in re.finditer(r'\b([A-Z][a-z]+ Example)\b', text):
+        name=m.group(1)
+        if name not in names:
+            names.append(name)
+    return names
+
+def classify_text(text):
+    low=text.lower()
+    if low.startswith('open loop:') or 'open loop' in low or low.startswith('- [ ]'):
+        return 'task'
+    if low.startswith('decision idea:') or low.startswith('decision:') or low.startswith('besluit:') or 'decision' in low:
+        return 'decision'
+    if low.startswith('task:') or low.startswith('todo:') or 'make a starter kit' in low or 'make the starter kit' in low:
+        return 'task'
+    return 'claim'
+
+def clean_payload_text(text):
+    return re.sub(r'^(open loop|decision idea|decision|besluit|task|todo):\s*', '', text, flags=re.I).strip()
+
+def infer_project(raws):
+    text=' '.join(r.get('text','') for r in raws).lower()
+    if 'starter kit' in text or 'ai vault' in text:
+        return {'id':'project.ai-vault-starter','type':'project','name':'Example AI Vault Starter','status':'active','source_id':source_id_for_path(raws[0]['source_path']) if raws else 'source.daily.2026-01-01'}
+    return None
+
 def privacy_guard():
     problems=[]
     for p in ROOT.rglob('*'):
@@ -134,7 +190,64 @@ def cmd_scan_daily(args=None):
     print(f'scan-daily ok: {len(daily)+len(inbox)} raw events; human-owned unchanged')
 
 def cmd_extract(args=None):
-    print('extract ok: starter records already materialized from synthetic raw events')
+    before = human_hashes()
+    raws = raw_events()
+    if not raws:
+        print('extract ok: no raw events found')
+        return
+
+    sources=[]; entities_by_id={}; claims=[]; tasks=[]; decisions=[]; relations=[]
+    project = infer_project(raws)
+
+    seen_paths=[]
+    for row in raws:
+        path=row['source_path']
+        if path not in seen_paths:
+            seen_paths.append(path)
+            sources.append({'id':source_id_for_path(path),'type':'source','title':title_for_path(path),'source_path':path,'source_kind':row.get('kind','note'),'created_at':row.get('created_at','2026-01-01T09:00:00Z')})
+
+    for row in raws:
+        text=row.get('text','').strip()
+        if not text:
+            continue
+        sid=source_id_for_path(row['source_path'])
+        cleaned=clean_payload_text(text)
+        classifier = classify_text(text)
+
+        for name in extract_person_names(text):
+            eid=f'entity.{slugify(name)}'
+            entities_by_id.setdefault(eid, {'id':eid,'type':'entity','name':name,'entity_type':'person','source_id':sid})
+            if project:
+                rel_type='target_user' if name == 'Sam Example' else 'mentioned_in_project'
+                relations.append({'id':stable_id('relation', eid, project['id'], rel_type),'type':'relation','from_id':eid,'to_id':project['id'],'relation_type':rel_type,'source_id':sid})
+
+        if classifier == 'task':
+            tasks.append({'id':stable_id('task', sid, cleaned),'type':'task','title':cleaned[:120],'status':'open','source_id':sid,'project_id':project['id'] if project else ''})
+        elif classifier == 'decision':
+            decisions.append({'id':stable_id('decision', sid, cleaned),'type':'decision','title':cleaned[:120],'status':'proposed' if 'idea' in text.lower() else 'accepted','source_id':sid,'project_id':project['id'] if project else ''})
+        else:
+            claims.append({'id':stable_id('claim', sid, cleaned),'type':'claim','text':cleaned,'source_id':sid,'confidence':0.8})
+
+    sources_out=unique_rows(sources)
+    entities_out=unique_rows(entities_by_id.values())
+    projects_out=unique_rows([project] if project else [])
+    claims_out=unique_rows(claims)
+    tasks_out=unique_rows([t for t in tasks if t.get('project_id')])
+    decisions_out=unique_rows([d for d in decisions if d.get('project_id')])
+    relations_out=unique_rows(relations)
+
+    # The deterministic extractor owns these record files. Attachment metadata stays separate.
+    write_jsonl(root_path('records/sources.jsonl'), sources_out)
+    write_jsonl(root_path('records/entities.jsonl'), entities_out)
+    write_jsonl(root_path('records/projects.jsonl'), projects_out)
+    write_jsonl(root_path('records/claims.jsonl'), claims_out)
+    write_jsonl(root_path('records/tasks.jsonl'), tasks_out)
+    write_jsonl(root_path('records/decisions.jsonl'), decisions_out)
+    write_jsonl(root_path('records/relations.jsonl'), relations_out)
+
+    if before != human_hashes():
+        raise SystemExit('extract mutated human-owned notes')
+    print(f'extract ok: generated {len(sources_out)} sources, {len(entities_out)} entities, {len(claims_out)} claims, {len(tasks_out)} tasks, {len(decisions_out)} decisions, {len(relations_out)} relations from {len(raws)} raw events; human-owned unchanged')
 
 def cmd_render_views(args=None):
     verify_human_unchanged(); records=all_records(); out=root_path('views/markdown'); out.mkdir(parents=True, exist_ok=True)

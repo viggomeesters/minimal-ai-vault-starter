@@ -1,10 +1,28 @@
 {
   "name": "Minimal AI Vault Starter",
   "promise": "Write daily/inbox notes; automation derives JSONL records and generated views without mutating human-owned notes.",
-  "human_owned": ["vault/daily/**", "vault/inbox/**"],
-  "agent_owned": ["raw/**", "records/**", "views/**", "vault/ai-daily/**", "vault/generated/**", "dist/**"],
-  "canonical": ["records/*.jsonl", "schema/*.schema.json"],
-  "generated": ["dist/**", "views/**", "vault/ai-daily/**", "vault/generated/**"],
+  "human_owned": [
+    "vault/daily/**",
+    "vault/inbox/**"
+  ],
+  "agent_owned": [
+    "raw/**",
+    "records/**",
+    "views/**",
+    "vault/ai-daily/**",
+    "vault/generated/**",
+    "dist/**"
+  ],
+  "canonical": [
+    "records/*.jsonl",
+    "schema/*.schema.json"
+  ],
+  "generated": [
+    "dist/**",
+    "views/**",
+    "vault/ai-daily/**",
+    "vault/generated/**"
+  ],
   "daily_note_permissions": {
     "read": true,
     "quote_with_source": true,
@@ -24,5 +42,23 @@
     "attachment SHA256 and size",
     "human-owned notes unchanged",
     "privacy/public-safety guard"
-  ]
+  ],
+  "extraction": {
+    "mode": "deterministic_rules",
+    "llm_required": false,
+    "raw_inputs": [
+      "raw/daily_events.jsonl",
+      "raw/inbox_events.jsonl"
+    ],
+    "canonical_outputs": [
+      "sources",
+      "entities",
+      "projects",
+      "claims",
+      "tasks",
+      "decisions",
+      "relations"
+    ],
+    "attachment_policy": "records/attachments.jsonl is validated and preserved; binary content is never embedded in JSONL."
+  }
 }

@@ -1,6 +1,6 @@
 # Minimal AI Vault Starter
 
-Write only daily notes and inbox notes. The automation turns them into structured JSONL records, AI daily summaries, open loops, entities, decisions, tasks, and searchable context bundles — while never touching your original human notes.
+Write only daily notes and inbox notes. Deterministic no-LLM automation turns raw bullets into structured JSONL records, AI daily summaries, open loops, entities, decisions, tasks, and searchable context bundles — while never touching your original human notes.
 
 ## Quickstart
 

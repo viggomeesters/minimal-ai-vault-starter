@@ -1,2 +1,2 @@
-{"id":"relation.alex-owns-project","type":"relation","from_id":"entity.alex-example","to_id":"project.ai-vault-starter","relation_type":"owns","source_id":"source.daily.2026-01-01"}
-{"id":"relation.sam-target-user","type":"relation","from_id":"entity.sam-example","to_id":"project.ai-vault-starter","relation_type":"target_user","source_id":"source.daily.2026-01-01"}
+{"id":"relation.54183588ece6","type":"relation","from_id":"entity.alex-example","to_id":"project.ai-vault-starter","relation_type":"mentioned_in_project","source_id":"source.inbox.example-capture"}
+{"id":"relation.65d79cf6fec0","type":"relation","from_id":"entity.sam-example","to_id":"project.ai-vault-starter","relation_type":"target_user","source_id":"source.daily.2026-01-01"}
