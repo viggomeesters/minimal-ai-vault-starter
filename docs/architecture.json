@@ -33,6 +33,11 @@
     "type": "deterministic_rules",
     "writes_canonical_records": true,
     "uses_llm": false,
-    "human_owned_mutation_allowed": false
+    "human_owned_mutation_allowed": false,
+    "dry_run_preview": {
+      "available": true,
+      "writes_files": false,
+      "purpose": "Review generated JSONL records before applying extractor output."
+    }
   }
 }

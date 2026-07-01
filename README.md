@@ -31,6 +31,7 @@ make check
 ```bash
 python3 scripts/vaultctx.py validate
 python3 scripts/vaultctx.py scan-daily
+python3 scripts/vaultctx.py extract --dry-run
 python3 scripts/vaultctx.py extract
 python3 scripts/vaultctx.py render-views
 python3 scripts/vaultctx.py bundle --goal "plan the week"

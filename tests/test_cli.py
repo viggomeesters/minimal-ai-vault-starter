@@ -56,6 +56,19 @@ def test_extract_is_idempotent_and_does_not_mutate_daily(tmp_path):
     assert (repo/'records/tasks.jsonl').read_text() == first
     assert daily.read_bytes() == before
 
+def test_extract_dry_run_prints_generated_records_and_writes_nothing(tmp_path):
+    repo=copy_repo(tmp_path)
+    run([sys.executable,'scripts/vaultctx.py','scan-daily'], cwd=repo)
+    before={p.relative_to(repo).as_posix(): p.read_bytes() for p in sorted((repo/'records').glob('*.jsonl'))}
+    data=json.loads(run([sys.executable,'scripts/vaultctx.py','extract','--dry-run'], cwd=repo).stdout)
+    after={p.relative_to(repo).as_posix(): p.read_bytes() for p in sorted((repo/'records').glob('*.jsonl'))}
+    assert after == before
+    assert data['dry_run'] is True
+    assert data['summary']['raw_events'] == 6
+    assert data['summary']['tasks'] >= 1
+    assert any('clone in two minutes' in row['title'] for row in data['generated_records']['tasks'])
+    assert any('structured records in JSONL' in row['title'] for row in data['generated_records']['decisions'])
+
 def test_bundle_contains_must_cite():
     data=json.loads(run([sys.executable,'scripts/vaultctx.py','bundle','--goal','plan the week']).stdout); assert data['must_cite']; assert all(x.startswith('source.') for x in data['must_cite'])
 

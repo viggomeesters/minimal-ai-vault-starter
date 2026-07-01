@@ -59,6 +59,12 @@
       "decisions",
       "relations"
     ],
-    "attachment_policy": "records/attachments.jsonl is validated and preserved; binary content is never embedded in JSONL."
+    "attachment_policy": "records/attachments.jsonl is validated and preserved; binary content is never embedded in JSONL.",
+    "dry_run_preview": {
+      "command": "python3 scripts/vaultctx.py extract --dry-run",
+      "writes_files": false,
+      "output": "JSON summary plus generated_records grouped by record file stem",
+      "record_file_invariant": "All records/*.jsonl remain byte-identical after dry-run."
+    }
   }
 }

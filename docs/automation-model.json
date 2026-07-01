@@ -11,7 +11,17 @@
     {
       "command": "extract",
       "purpose": "Convert raw events to typed records.",
-      "may_mutate_human_owned": false
+      "may_mutate_human_owned": false,
+      "dry_run": {
+        "command": "extract --dry-run",
+        "purpose": "Preview the exact deterministic record generation as JSON without writing records/*.jsonl.",
+        "writes_files": false,
+        "stdout_schema": {
+          "dry_run": "boolean",
+          "summary": "object",
+          "generated_records": "object"
+        }
+      }
     },
     {
       "command": "render-views",
@@ -60,6 +70,16 @@
       "idempotent stable ids",
       "source_id on every generated typed record",
       "human-owned notes unchanged"
-    ]
+    ],
+    "dry_run": {
+      "command": "python3 scripts/vaultctx.py extract --dry-run",
+      "guarantee": "Prints the same generated records the extractor would write, but leaves records/*.jsonl byte-identical.",
+      "stdout_contains": [
+        "dry_run",
+        "summary",
+        "generated_records"
+      ],
+      "test": "test_extract_dry_run_prints_generated_records_and_writes_nothing"
+    }
   }
 }

@@ -189,13 +189,7 @@ def cmd_scan_daily(args=None):
     if before != human_hashes(): raise SystemExit('scan-daily mutated human-owned notes')
     print(f'scan-daily ok: {len(daily)+len(inbox)} raw events; human-owned unchanged')
 
-def cmd_extract(args=None):
-    before = human_hashes()
-    raws = raw_events()
-    if not raws:
-        print('extract ok: no raw events found')
-        return
-
+def generated_extract_records(raws):
     sources=[]; entities_by_id={}; claims=[]; tasks=[]; decisions=[]; relations=[]
     project = infer_project(raws)
 
@@ -228,26 +222,59 @@ def cmd_extract(args=None):
         else:
             claims.append({'id':stable_id('claim', sid, cleaned),'type':'claim','text':cleaned,'source_id':sid,'confidence':0.8})
 
-    sources_out=unique_rows(sources)
-    entities_out=unique_rows(entities_by_id.values())
-    projects_out=unique_rows([project] if project else [])
-    claims_out=unique_rows(claims)
-    tasks_out=unique_rows([t for t in tasks if t.get('project_id')])
-    decisions_out=unique_rows([d for d in decisions if d.get('project_id')])
-    relations_out=unique_rows(relations)
+    return {
+        'sources': unique_rows(sources),
+        'entities': unique_rows(entities_by_id.values()),
+        'projects': unique_rows([project] if project else []),
+        'claims': unique_rows(claims),
+        'tasks': unique_rows([t for t in tasks if t.get('project_id')]),
+        'decisions': unique_rows([d for d in decisions if d.get('project_id')]),
+        'relations': unique_rows(relations),
+    }
+
+
+def extract_summary(generated, raw_count):
+    return {
+        'raw_events': raw_count,
+        'sources': len(generated['sources']),
+        'entities': len(generated['entities']),
+        'claims': len(generated['claims']),
+        'tasks': len(generated['tasks']),
+        'decisions': len(generated['decisions']),
+        'relations': len(generated['relations']),
+        'human_owned_unchanged': True,
+    }
+
+
+def cmd_extract(args=None):
+    before = human_hashes()
+    raws = raw_events()
+    dry_run = bool(getattr(args, 'dry_run', False))
+    generated = generated_extract_records(raws)
+    summary = extract_summary(generated, len(raws))
+
+    if dry_run:
+        if before != human_hashes():
+            raise SystemExit('extract dry-run mutated human-owned notes')
+        print(json.dumps({'dry_run': True, 'summary': summary, 'generated_records': generated}, indent=2, ensure_ascii=False))
+        return
+
+    if not raws:
+        print('extract ok: no raw events found')
+        return
 
     # The deterministic extractor owns these record files. Attachment metadata stays separate.
-    write_jsonl(root_path('records/sources.jsonl'), sources_out)
-    write_jsonl(root_path('records/entities.jsonl'), entities_out)
-    write_jsonl(root_path('records/projects.jsonl'), projects_out)
-    write_jsonl(root_path('records/claims.jsonl'), claims_out)
-    write_jsonl(root_path('records/tasks.jsonl'), tasks_out)
-    write_jsonl(root_path('records/decisions.jsonl'), decisions_out)
-    write_jsonl(root_path('records/relations.jsonl'), relations_out)
+    write_jsonl(root_path('records/sources.jsonl'), generated['sources'])
+    write_jsonl(root_path('records/entities.jsonl'), generated['entities'])
+    write_jsonl(root_path('records/projects.jsonl'), generated['projects'])
+    write_jsonl(root_path('records/claims.jsonl'), generated['claims'])
+    write_jsonl(root_path('records/tasks.jsonl'), generated['tasks'])
+    write_jsonl(root_path('records/decisions.jsonl'), generated['decisions'])
+    write_jsonl(root_path('records/relations.jsonl'), generated['relations'])
 
     if before != human_hashes():
         raise SystemExit('extract mutated human-owned notes')
-    print(f'extract ok: generated {len(sources_out)} sources, {len(entities_out)} entities, {len(claims_out)} claims, {len(tasks_out)} tasks, {len(decisions_out)} decisions, {len(relations_out)} relations from {len(raws)} raw events; human-owned unchanged')
+    print(f'extract ok: generated {summary["sources"]} sources, {summary["entities"]} entities, {summary["claims"]} claims, {summary["tasks"]} tasks, {summary["decisions"]} decisions, {summary["relations"]} relations from {summary["raw_events"]} raw events; human-owned unchanged')
 
 def cmd_render_views(args=None):
     verify_human_unchanged(); records=all_records(); out=root_path('views/markdown'); out.mkdir(parents=True, exist_ok=True)
@@ -294,7 +321,9 @@ def cmd_hash_attachment(args):
 
 def main():
     ap=argparse.ArgumentParser(); sub=ap.add_subparsers(dest='cmd', required=True)
-    sub.add_parser('validate').set_defaults(func=cmd_validate); sub.add_parser('scan-daily').set_defaults(func=cmd_scan_daily); sub.add_parser('extract').set_defaults(func=cmd_extract); sub.add_parser('render-views').set_defaults(func=cmd_render_views)
+    sub.add_parser('validate').set_defaults(func=cmd_validate); sub.add_parser('scan-daily').set_defaults(func=cmd_scan_daily)
+    e=sub.add_parser('extract'); e.add_argument('--dry-run', action='store_true'); e.set_defaults(func=cmd_extract)
+    sub.add_parser('render-views').set_defaults(func=cmd_render_views)
     b=sub.add_parser('bundle'); b.add_argument('--goal', default=''); b.set_defaults(func=cmd_bundle)
     q=sub.add_parser('query'); q.add_argument('terms', nargs='+'); q.set_defaults(func=cmd_query)
     sub.add_parser('build-sqlite').set_defaults(func=cmd_build_sqlite)
