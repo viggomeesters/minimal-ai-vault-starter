@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal AI Vault Starter social preview</title>
+  <desc id="desc">Daily notes are read-only evidence; deterministic extraction creates JSONL context.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="1" stop-color="#1e1b4b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1010" cy="110" r="170" fill="#38bdf8" opacity="0.18"/>
+  <circle cx="1060" cy="520" r="210" fill="#a78bfa" opacity="0.16"/>
+  <text x="72" y="150" fill="#93c5fd" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="4">MINIMAL AI VAULT STARTER</text>
+  <text x="72" y="260" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800">Write notes.</text>
+  <text x="72" y="345" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800">Generate JSONL.</text>
+  <text x="76" y="430" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="32">Read-only daily notes → deterministic records → AI-ready context</text>
+  <rect x="78" y="482" width="520" height="58" rx="29" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+  <text x="112" y="520" fill="#e0f2fe" font-family="monospace" font-size="24">python scripts/vaultctx.py extract --dry-run</text>
+</svg>
